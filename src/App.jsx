@@ -1,0 +1,11 @@
+import Keyboard from './components/Keyboard'
+
+const App = () => {
+  return (
+    <div>
+      <Keyboard/>
+    </div>
+  )
+}
+
+export default App
