@@ -8,7 +8,7 @@ const HologramPlane = ({ noteStates }) => {
     const N = 48;    // Columns (Notes)
     const M = 100;   // Rows (History)
 
-    // 1. Memoize the DataTexture so it's created only once
+
     const [data, texture] = useMemo(() => {
         const size = N * M;
         const d = new Uint8Array(size);
@@ -18,7 +18,6 @@ const HologramPlane = ({ noteStates }) => {
         return [d, tex];
     }, [N, M]);
 
-    // 2. Memoize the ShaderMaterial to prevent "restarting" the shader on every render
     const material = useMemo(() => {
         return new THREE.ShaderMaterial({
             side: THREE.DoubleSide,
@@ -94,14 +93,14 @@ const HologramPlane = ({ noteStates }) => {
     }, [texture, N, M]);
 
     useFrame((state) => {
-        // Update texture data
+
         data.set(data.subarray(0, N * (M - 1)), N);
         for (let i = 0; i < N; i++) {
             data[i] = noteStates[i] ? 255 : 0;
         }
         texture.needsUpdate = true;
 
-        // Update uTime uniform directly on the memoized material
+
         material.uniforms.uTime.value = state.clock.elapsedTime;
     });
 

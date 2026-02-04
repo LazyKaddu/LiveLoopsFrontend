@@ -3,6 +3,8 @@ import { useFrame } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { extend } from '@react-three/fiber';
+import { useGLTF } from '@react-three/drei';
+import { Gears } from './Gears';
 
 const JellyMaterial = shaderMaterial(
     {
@@ -107,9 +109,10 @@ const JellyMaterial = shaderMaterial(
 
 extend({ JellyMaterial });
 
-export const JellySphere = ({handelSettingOpen}) => {
+export const JellySphere = ({ handelSettingOpen }) => {
     const matRef = useRef();
-
+    const { scene } = useGLTF("/gears.glb");
+    console.log(useGLTF("/gears.glb"))
     useFrame((state) => {
         if (matRef.current) {
             matRef.current.uTime = state.clock.getElapsedTime();
@@ -118,14 +121,7 @@ export const JellySphere = ({handelSettingOpen}) => {
 
     return (
         <group position={[-3.5, 0, 0]} scale={0.2} onPointerDown={handelSettingOpen}>
-            <mesh>
-                <boxGeometry scale={0.75} args={[1, 1, 1]} />
-                <meshStandardMaterial
-                    color="#ffffff"
-                    metalness={0.0}
-                    roughness={0.1}
-                />
-            </mesh>
+            <Gears/>
             <mesh >
                 <sphereGeometry args={[1, 64, 64]} />
                 <jellyMaterial
